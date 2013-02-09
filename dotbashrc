@@ -1,0 +1,12 @@
+# bash aliases
+set -o vi		# set vi command editing mode
+
+alias t=more
+alias er=rm
+function l() { ls -CF $* | more; }
+function ll() { ls -l $* | more; }
+#  alias cp="cp --preserve=timestamp" # solaris?
+alias cp="cp -p"			# mac
+alias finder="open ."			# mac
+
+#alias ubu1="ssh 192.168.1.50 -l ben"

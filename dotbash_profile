@@ -1,0 +1,4 @@
+# bash profile
+. .bashrc
+PS1="Local \w: "		# set prompt to be CWD
+PATH=.:~/bin:"$PATH"
