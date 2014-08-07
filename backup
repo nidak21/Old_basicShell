@@ -8,6 +8,8 @@
 
 filename=`date "+%Y.%m.%d-%H.%M"`
 target=/Volumes/jak/MacBackups
+last_incremental=$target/`cat $target/last_incremental`
+echo $last_incremental
 
 #archive=$target/full.${filename}.tar	# for full backup
 archive=$target/inc.${filename}.tar	# for incremental backup
@@ -29,10 +31,11 @@ find -f		\
 ./work		\
 -not -path "*/Microsoft User Data/*" \
 -not -path "*/Statsitics_I/Videos/*" \
--type f -newer  $target/2014.04.17-09.35.tar  > /tmp/jakfilelist
+-type f -newer  $last_incremental  > /tmp/jakfilelist
 
 tar cvf ${archive} -z -T /tmp/jakfilelist
 rm -f /tmp/jakfilelist
+echo ${archive} > $last_incremental	# remember the latest incremental file
 
 exit 0
 # full backup
