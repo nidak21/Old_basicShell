@@ -9,7 +9,8 @@
 targetDir=/Volumes/jak/MacBackups	# where backups should be stored
 #targetDir=$HOME				# where backups should be stored
 dateString=`date "+%Y.%m.%d-%H.%M"`
-excludeFile="$HOME/.backupExcludes"	# file of tar exclude patterns
+excludeFiles="$HOME/.backupExcludes"	# file of tar exclude patterns
+incrFiles="$HOME/.backupChangedFiles"	# file to hold names of changed files
 lastFullBackupFile=$targetDir/LastFullBackupDate	# touch file of last
 							# full backup date
 backupType="full"		# default backup type
@@ -26,6 +27,7 @@ fi
 # list of directories/files to backup
 # all relative to home directory
 toBackUp=( \
+   ./work         \
    ./bin          \
    ./Desktop      \
    ./other        \
@@ -34,7 +36,6 @@ toBackUp=( \
    ./manager      \
    ./oboedit_config\
    ./Signatures   \
-   ./work         \
    ./.bash*	   \
    ./.exrc	   \
    ./.vimrc	   \
@@ -43,7 +44,7 @@ toBackUp=( \
 
 # list of directories/files to exclude from backup
 # only need to exclude things if they are in the directories above
-cat - > $excludeFile <<-EndOfExcludes
+cat - > $excludeFiles <<-EndOfExcludes
 	*/Statistics_I/Videos/
 	*/venv/
 	*/Stale/
@@ -52,9 +53,13 @@ cat - > $excludeFile <<-EndOfExcludes
 	*/Microsoft?User?Data*
 EndOfExcludes
 
+cd	# run everything from home directory
+
 if [ "$backupType" == "full" ]; then
     archiveName=$targetDir/full.${dateString}.tar.bzip2
-    newer=""				# no tar "newer" option
+
+    tar -cvyf $archiveName -X $excludeFiles ${toBackUp[*]}
+
     touch $lastFullBackupFile 		# remember full backup date/time
 
 elif [ "$backupType" == incremental ]; then
@@ -64,19 +69,22 @@ elif [ "$backupType" == incremental ]; then
 	exit 5
     fi
     archiveName=$targetDir/incr.${dateString}.tar.bzip2
-    newer="--newer-mtime-than $lastFullBackupFile"
+
+    	# Use find to get list of files updated since last full backup.
+	# Cannot use tar '--newer-than' option because if a containing dir
+	#  of a changed file is not itself changed, tar doesn't go into
+	#  that directory.
+    find ${toBackUp[*]} -type f -newer $lastFullBackupFile -print >$incrFiles
+    echo
     echo "$0:   backing up files since" `stat -f "%t%Sm" $lastFullBackupFile`
+    echo
+    tar -cvyf $archiveName -T $incrFiles -X $excludeFiles
+    rm -f $incrFiles
 else
     echo "$0:   invalid backup type: $backupType"
     exit 5
 fi
 
-tarCmd="tar -cvyf $archiveName $newer -X $excludeFile ${toBackUp[*]}"
-
-echo "$tarCmd"
-
-cd		# run from home directory
-$tarCmd
-rm -f $excludeFile
+rm -f $excludeFiles
 
 exit 0
