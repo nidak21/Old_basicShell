@@ -1,9 +1,7 @@
 # bash profile
 . .bashrc
 
-#export PS1="Local \w: "		# set prompt to be CWD
-export PS1="\e[0;36mLocal \w> \e[m" # with color!
-
+# for my work Mac
 PATH=.:~/bin:~jak/anaconda/bin:"$PATH"
 PYTHONPATH=.:./lib:~/lib/python:~lib/python/site:"$PYTHONPATH"
 export PYTHONPATH
