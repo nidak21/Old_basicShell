@@ -3,5 +3,5 @@
 
 # for my work Mac
 PATH=.:~/bin:~jak/anaconda/bin:"$PATH"
-PYTHONPATH=.:./lib:~/lib/python:~lib/python/site:"$PYTHONPATH"
+PYTHONPATH=.:./lib:~/lib/python:~/lib/python/site:"$PYTHONPATH"
 export PYTHONPATH
