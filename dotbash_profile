@@ -1,5 +1,5 @@
 # bash profile
-. .bashrc
+. ~/.bashrc
 
 # for my work Mac
 PATH=.:~/bin:~jak/anaconda/bin:"$PATH"
