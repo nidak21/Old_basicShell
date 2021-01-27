@@ -16,5 +16,5 @@ if [ $# = 0 ];then
 else
     dirs="$*"
 fi
-find $dirs -name .git -prune -o -type f -mtime -1 -print
+find $dirs -name Library -prune -o -name .git -prune -o -type f -mtime -1 -print
 #
