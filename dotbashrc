@@ -12,7 +12,7 @@ export LESS
 # bash aliases
 set -o vi		# set vi command editing mode
 
-alias t=more
+alias t="less"
 alias er=rm
 function l() { ls -CF $* | less; }
 function ll() { ls -l $* | less; }
