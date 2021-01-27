@@ -6,19 +6,22 @@
 #  \[\033[00m\] ends coloring
 export PS1="\[\033[1;34m\]Local \w:\[\033[00m\] "
 
+LESS="-X -R --QUIT-AT-EOF"
+export LESS
+
 # bash aliases
 set -o vi		# set vi command editing mode
 
 alias t=more
 alias er=rm
-function l() { ls -CF $* | more; }
-function ll() { ls -l $* | more; }
+function l() { ls -CF $* | less; }
+function ll() { ls -l $* | less; }
 #  alias cp="cp --preserve=timestamp" # solaris?
 alias cp="cp -p"			# mac
 alias finder="open ."			# mac
 
-alias gitcommitgraph='git log --oneline --graph --all --decorate'
+#alias gitcommitgraph='git log --oneline --graph --all --decorate'
+alias gitcommitgraph="git log --pretty=jakgraph --graph --all --decorate --date=short"
 alias gitcommits='git log --decorate=short'
 alias gitcommits+='git log --decorate=short --name-status'
 
-#alias ubu1="ssh 192.168.1.50 -l ben"
