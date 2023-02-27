@@ -4,7 +4,7 @@
 #  0;=normal text  1;=bold or light text (depends on terminal)
 #  2;=dim text  4;=underlined 7=reverse text & background
 #  \[\033[00m\] ends coloring
-export PS1="\[\033[1;34m\]Local \w:\[\033[00m\] "
+export PS1="\[\033[1;34m\]Mac \w:\[\033[00m\] "
 
 LESS="-X -R --QUIT-AT-EOF"
 export LESS
@@ -24,4 +24,5 @@ alias finder="open ."			# mac
 alias gitcommitgraph="git log --pretty=jakgraph --graph --all --decorate --date=short"
 alias gitcommits='git log --decorate=short'
 alias gitcommits+='git log --decorate=short --name-status'
+alias s="git status"
 
